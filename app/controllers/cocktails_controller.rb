@@ -10,6 +10,8 @@ class CocktailsController < ApplicationController
   # GET /cocktails/1
   # GET /cocktails/1.json
   def show
+    @cocktail = Cocktail.find(params[:id])
+    @dose = Dose.new
   end
 
   # GET /cocktails/new
@@ -19,23 +21,20 @@ class CocktailsController < ApplicationController
 
   # GET /cocktails/1/edit
   def edit
+    @cocktail = Cocktail.find(params[:id])
   end
 
   # POST /cocktails
   # POST /cocktails.json
   def create
     @cocktail = Cocktail.new(cocktail_params)
-
-    respond_to do |format|
-      if @cocktail.save
-        format.html { redirect_to @cocktail, notice: 'Cocktail was successfully created.' }
-        format.json { render :show, status: :created, location: @cocktail }
-      else
-        format.html { render :new }
-        format.json { render json: @cocktail.errors, status: :unprocessable_entity }
-      end
+    if @cocktail.save
+      redirect_to cocktail_path(@cocktail)
+    else
+      render 'new'
     end
   end
+
 
   # PATCH/PUT /cocktails/1
   # PATCH/PUT /cocktails/1.json
